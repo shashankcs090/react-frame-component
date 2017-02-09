@@ -273,4 +273,26 @@ describe("Frame test",function(){
 
     expect(Frame.prototype.getMountTarget.call(frame)).toEqual(body.querySelector('#container'));
   });
+
+  it("should not an entry into history when we render the iframe", function(){
+    div = document.body.appendChild(document.createElement('div'));
+    var initialContent = '<!DOCTYPE html><html><head></head><body><div></div><div id="container"></div></body></html>';
+    var frame = ReactDOM.render(<Frame initialContent={initialContent} mountTarget='#container'>Hello</Frame>, div),
+    body = ReactDOM.findDOMNode(frame).contentDocument.body;
+    expect(Frame.prototype.getMountTarget.call(frame)).toEqual(body.querySelector('#container'));
+
+    var oldHistoryLength = history.length;
+    var flag = false;
+    setTimeout(function(){
+      flag = true;
+    }, 1000);
+
+    waitsFor(function() {
+      return flag;
+    }, 'setTimeout taking more than required time', 2000);
+
+    runs(function() {
+      expect(history.length).toEqual(oldHistoryLength);
+    });
+  });
 });

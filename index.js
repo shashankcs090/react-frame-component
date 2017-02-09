@@ -63,7 +63,7 @@ var Frame = React.createClass({
     }
 
     var doc = this.getDoc();
-    if(doc && doc.readyState === 'complete') {
+    if(doc) {
       var contents = React.createElement('div',
         undefined,
         this.props.head,
@@ -89,8 +89,6 @@ var Frame = React.createClass({
       ReactDOM.unstable_renderSubtreeIntoContainer(this, contents, mountTarget, callback);
 
       resetWarnings();
-    } else {
-      setTimeout(this.renderFrameContents, 0);
     }
   },
   getMountTarget: function() {
